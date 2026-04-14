@@ -27,7 +27,7 @@
 <body class="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(239,225,209,0.8),_rgba(250,247,242,1)_60%)] text-ink">
     <header class="border-b border-black/10 bg-white/70 backdrop-blur">
         <div class="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
-            <a href="{{ route('storefront.home') }}" class="text-xl font-black tracking-[0.3em] uppercase">Discos Antigos</a>
+            <a href="{{ route('storefront.home') }}" class="text-xl font-black tracking-[0.3em] uppercase">Vintage Disks E-Commerce</a>
             <nav class="flex items-center gap-6 text-sm font-medium">
                 <a href="{{ route('storefront.products.index') }}" class="hover:text-rust">Catalogo</a>
                 <a href="{{ route('cart.index') }}" class="hover:text-rust">Carrinho</a>
