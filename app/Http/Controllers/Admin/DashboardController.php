@@ -9,6 +9,7 @@ use App\Models\Order;
 use App\Models\Payment;
 use App\Models\PaymentWebhookLog;
 use App\Models\Product;
+use App\Models\User;
 use Illuminate\Contracts\View\View;
 
 class DashboardController extends Controller
@@ -26,6 +27,11 @@ class DashboardController extends Controller
             'recentOrders' => Order::query()->latest()->take(5)->get(),
             'recentAudits' => AuditLog::query()->with('user')->latest()->take(6)->get(),
             'recentWebhooks' => PaymentWebhookLog::query()->with('payment.order')->latest()->take(6)->get(),
+            'adminUsers' => User::query()
+                ->whereIn('role', ['admin', 'manager'])
+                ->latest()
+                ->take(6)
+                ->get(),
         ]);
     }
 }
