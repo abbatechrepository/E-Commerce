@@ -10,6 +10,7 @@ use App\Models\Product;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
+use Illuminate\Support\Arr;
 
 class AdminProductController extends Controller
 {
@@ -22,8 +23,10 @@ class AdminProductController extends Controller
 
     public function store(StoreProductRequest $request): ProductResource
     {
-        $product = Product::query()->create($request->validated());
-        $product->inventory()->create();
+        $validated = $request->validated();
+
+        $product = Product::query()->create($this->productData($validated));
+        $product->inventory()->create($this->inventoryData($validated));
 
         return new ProductResource($product->load(['artist', 'genre', 'category', 'inventory']));
     }
@@ -36,7 +39,14 @@ class AdminProductController extends Controller
     public function update(StoreProductRequest $request, Product $product): ProductResource
     {
         $this->authorize('update', $product);
-        $product->update($request->validated());
+
+        $validated = $request->validated();
+
+        $product->update($this->productData($validated));
+        $product->inventory()->updateOrCreate(
+            ['product_id' => $product->id],
+            $this->inventoryData($validated)
+        );
 
         return new ProductResource($product->refresh()->load(['artist', 'genre', 'category', 'inventory']));
     }
@@ -54,5 +64,26 @@ class AdminProductController extends Controller
         $publishedProduct = $publishProductAction->execute($product);
 
         return response()->json(new ProductResource($publishedProduct->load(['artist', 'genre', 'category', 'inventory'])));
+    }
+
+    private function productData(array $validated): array
+    {
+        return Arr::except($validated, [
+            'available_quantity',
+            'reserved_quantity',
+            'minimum_quantity',
+            'cover_image',
+            'alt_text',
+            'is_primary',
+        ]);
+    }
+
+    private function inventoryData(array $validated): array
+    {
+        return [
+            'available_quantity' => (int) ($validated['available_quantity'] ?? 0),
+            'reserved_quantity' => (int) ($validated['reserved_quantity'] ?? 0),
+            'minimum_quantity' => (int) ($validated['minimum_quantity'] ?? 0),
+        ];
     }
 }
