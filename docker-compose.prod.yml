@@ -21,6 +21,8 @@ services:
       - .env
     depends_on:
       - mysql
+    volumes:
+      - ecommerce_storage_prod_data:/var/www/html/storage/app/public
     networks:
       - default
       - dokploy-network
@@ -28,17 +30,17 @@ services:
       - traefik.enable=true
       - traefik.docker.network=dokploy-network
 
-      - traefik.http.routers.ecommerce-web.rule=Host(`abbatech.dev.br`) && PathPrefix(`/e-commerce`)
+      - traefik.http.routers.ecommerce-web.rule=Host(`abbatech.dev.br`) && PathPrefix(`/abbatech/e-commerce`)
       - traefik.http.routers.ecommerce-web.entrypoints=web
       - traefik.http.routers.ecommerce-web.middlewares=redirect-to-https@file
 
-      - traefik.http.routers.ecommerce-websecure.rule=Host(`abbatech.dev.br`) && PathPrefix(`/e-commerce`)
+      - traefik.http.routers.ecommerce-websecure.rule=Host(`abbatech.dev.br`) && PathPrefix(`/abbatech/e-commerce`)
       - traefik.http.routers.ecommerce-websecure.entrypoints=websecure
       - traefik.http.routers.ecommerce-websecure.tls.certresolver=letsencrypt
       - traefik.http.routers.ecommerce-websecure.middlewares=ecommerce-stripprefix
       - traefik.http.services.ecommerce-websecure.loadbalancer.server.port=80
 
-      - traefik.http.middlewares.ecommerce-stripprefix.stripprefix.prefixes=/e-commerce
+      - traefik.http.middlewares.ecommerce-stripprefix.stripprefix.prefixes=/abbatech/e-commerce
 
   queue:
     build:
@@ -55,6 +57,7 @@ services:
 
 volumes:
   ecommerce_mysql_prod_data:
+  ecommerce_storage_prod_data:
 
 networks:
   dokploy-network:
