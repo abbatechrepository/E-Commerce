@@ -33,11 +33,21 @@
         <div class="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
             @foreach ($featuredProducts as $product)
                 <article class="overflow-hidden rounded-[1.75rem] border border-black/10 bg-white shadow-vinyl">
-                    @if ($product->primaryImage)
-                        <img src="{{ $product->primaryImage->url }}" alt="{{ $product->primaryImage->alt_text }}" class="h-60 w-full object-cover">
-                    @else
-                        <div class="h-60 bg-[linear-gradient(135deg,_#241d18,_#6c4f3d)]"></div>
-                    @endif
+                    <div class="relative">
+                        @if ($product->primaryImage)
+                            <img src="{{ $product->primaryImage->url }}" alt="{{ $product->primaryImage->alt_text }}" class="h-60 w-full object-cover">
+                        @else
+                            <div class="h-60 bg-[linear-gradient(135deg,_#241d18,_#6c4f3d)]"></div>
+                        @endif
+                        <div class="absolute left-4 top-4 flex flex-wrap gap-2">
+                            @if ($product->genre?->name)
+                                <span class="rounded-full bg-ink/70 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.28em] text-white backdrop-blur">{{ $product->genre->name }}</span>
+                            @endif
+                            @if ($product->is_rare)
+                                <span class="rounded-full bg-rust/85 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.28em] text-white">Raro</span>
+                            @endif
+                        </div>
+                    </div>
                     <div class="space-y-3 p-6">
                         <div class="flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.25em] text-olive">
                             <span>{{ $product->media_format }}</span>

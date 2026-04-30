@@ -7,7 +7,11 @@
                 <p class="text-sm font-bold uppercase tracking-[0.3em] text-olive">Painel Administrativo</p>
                 <h1 class="mt-2 text-4xl font-black">Centro operacional para catalogo, pedidos e retencao.</h1>
             </div>
-            <a href="{{ route('admin.users.index') }}" class="rounded-full border border-ink/15 px-5 py-3 text-sm font-bold uppercase tracking-[0.2em] hover:border-rust hover:text-rust">Gerenciar usuarios</a>
+            <div class="flex flex-wrap gap-3">
+                <a href="{{ route('admin.products.create') }}" class="rounded-full bg-ink px-5 py-3 text-sm font-bold uppercase tracking-[0.2em] text-white hover:bg-rust">Cadastrar produto</a>
+                <a href="{{ route('admin.products.index') }}" class="rounded-full border border-ink/15 px-5 py-3 text-sm font-bold uppercase tracking-[0.2em] hover:border-rust hover:text-rust">Gerenciar produtos</a>
+                <a href="{{ route('admin.users.index') }}" class="rounded-full border border-ink/15 px-5 py-3 text-sm font-bold uppercase tracking-[0.2em] hover:border-rust hover:text-rust">Gerenciar usuarios</a>
+            </div>
         </div>
 
         <div class="grid gap-6 md:grid-cols-2 xl:grid-cols-4">

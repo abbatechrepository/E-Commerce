@@ -2,16 +2,23 @@
 .env
 .env.*
 !.env.example
+!.env.*.example
 auth.json
 
-# Dependencies
+# Composer / PHP dependencies
 /vendor/
+/composer.phar
+
+# Node / frontend dependencies
 /node_modules/
 
-# Build artifacts
+# Frontend / Vite build artifacts
 /public/build/
 /public/hot
 /public/storage
+/.vite/
+/vite.config.js.timestamp-*
+/vite.config.ts.timestamp-*
 
 # Laravel runtime cache / logs
 /bootstrap/cache/*
@@ -30,15 +37,21 @@ auth.json
 /storage/framework/views/*
 !/storage/framework/views/.gitignore
 
-# Generated demo assets
-/storage/app/public/products/demo/*
+# Laravel generated files / uploads
+/storage/app/*
+!/storage/app/.gitignore
+!/storage/app/public/
+/storage/app/public/*
+!/storage/app/public/.gitignore
 
 # PHPUnit / test cache
-/.phpunit.cache
+/.phpunit.cache/
 /.phpunit.result.cache
+/coverage/
 
-# Optional local DB files
+# Local database files
 /database/*.sqlite
+/database/*.sqlite-*
 /database/*.sqlite-journal
 
 # JS package manager logs
@@ -47,15 +60,35 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
+# Docker local overrides
+/docker-compose.override.yml
+
 # Local tools / IDE
 /.fleet/
 /.idea/
 /.vscode/
+*.code-workspace
 
 # OS files
 .DS_Store
 Thumbs.db
+Desktop.ini
 
 # Legacy / local VM tooling
 Homestead.json
 Homestead.yaml
+.vagrant/
+
+# Local operational notes / handoff files
+DEPLOY_VALIDATION.md
+DEPLOY_CHECKLIST_ECOMMERCE.md
+HANDOFF_*.md
+
+# Temporary / backup files
+*.bak
+*.backup
+*.tmp
+*.swp
+*~
+.gitignore.backup-*
+/Dockerfile

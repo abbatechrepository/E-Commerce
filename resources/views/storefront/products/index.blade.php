@@ -16,11 +16,21 @@
         <div class="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
             @forelse ($products as $product)
                 <article class="rounded-[1.5rem] border border-black/10 bg-white p-6 shadow-vinyl">
-                    @if ($product->primaryImage)
-                        <img src="{{ $product->primaryImage->url }}" alt="{{ $product->primaryImage->alt_text }}" class="mb-5 h-52 w-full rounded-[1.25rem] object-cover">
-                    @else
-                        <div class="mb-5 h-52 rounded-[1.25rem] bg-[linear-gradient(160deg,_#1f1a17,_#ad5d3d)]"></div>
-                    @endif
+                    <div class="relative mb-5">
+                        @if ($product->primaryImage)
+                            <img src="{{ $product->primaryImage->url }}" alt="{{ $product->primaryImage->alt_text }}" class="h-52 w-full rounded-[1.25rem] object-cover">
+                        @else
+                            <div class="h-52 rounded-[1.25rem] bg-[linear-gradient(160deg,_#1f1a17,_#ad5d3d)]"></div>
+                        @endif
+                        <div class="absolute left-4 top-4 flex flex-wrap gap-2">
+                            @if ($product->genre?->name)
+                                <span class="rounded-full bg-ink/70 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.28em] text-white backdrop-blur">{{ $product->genre->name }}</span>
+                            @endif
+                            @if ($product->is_rare)
+                                <span class="rounded-full bg-rust/85 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.28em] text-white">Raro</span>
+                            @endif
+                        </div>
+                    </div>
                     <div class="space-y-3">
                         <div class="flex flex-wrap gap-2 text-[11px] font-bold uppercase tracking-[0.25em] text-olive">
                             <span>{{ $product->media_format }}</span>
