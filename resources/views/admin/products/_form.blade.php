@@ -2,7 +2,7 @@
     $editing = $product->exists;
 @endphp
 
-<form method="post" action="{{ $editing ? route('admin.products.update', $product) : route('admin.products.store') }}" class="space-y-8">
+<form method="post" action="{{ $editing ? route('admin.products.update', $product) : route('admin.products.store') }}" enctype="multipart/form-data" class="space-y-8">
     @csrf
     @if ($editing)
         @method('put')
@@ -115,6 +115,26 @@
         <label class="mb-2 block text-sm font-semibold">Descricao</label>
         <textarea name="description" rows="5" class="w-full rounded-2xl border border-black/10 px-4 py-3" required>{{ old('description', $product->description) }}</textarea>
     </div>
+
+    @unless ($editing)
+        <div class="grid gap-5 md:grid-cols-2">
+            <div>
+                <label class="mb-2 block text-sm font-semibold">Capa do produto</label>
+                <input type="file" name="cover_image" accept="image/*" class="w-full rounded-2xl border border-black/10 px-4 py-3">
+                <p class="mt-2 text-sm text-ink/60">Se enviar uma imagem aqui, ela ja sera salva como capa principal do produto.</p>
+            </div>
+            <div class="space-y-4">
+                <div>
+                    <label class="mb-2 block text-sm font-semibold">Texto alternativo da capa</label>
+                    <input name="alt_text" value="{{ old('alt_text') }}" class="w-full rounded-2xl border border-black/10 px-4 py-3" placeholder="Ex.: Capa frontal do disco">
+                </div>
+                <label class="flex items-center gap-3 rounded-2xl bg-sand px-4 py-3 text-sm">
+                    <input type="checkbox" name="is_primary" value="1" @checked(old('is_primary', true))>
+                    Definir como imagem principal
+                </label>
+            </div>
+        </div>
+    @endunless
 
     <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-5">
         <label class="flex items-center gap-3 rounded-2xl bg-sand px-4 py-3 text-sm"><input type="checkbox" name="is_active" value="1" @checked(old('is_active', $product->is_active))> Ativo</label>

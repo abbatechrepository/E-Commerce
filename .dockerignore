@@ -1,0 +1,79 @@
+# Git / metadata
+.git
+.gitignore
+.gitattributes
+
+# IDE / local tools
+.idea
+.vscode
+.fleet
+*.code-workspace
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+!.env.*.example
+auth.json
+
+# Dependencies
+node_modules
+vendor
+composer.phar
+
+# Frontend / build artifacts
+public/build
+public/hot
+.vite
+vite.config.js.timestamp-*
+vite.config.ts.timestamp-*
+
+# Laravel runtime files
+storage/logs
+storage/framework/cache/data
+storage/framework/sessions
+storage/framework/testing
+storage/framework/views
+bootstrap/cache/*.php
+storage/*.key
+
+# Generated uploads / local storage
+storage/app/*
+!storage/app/.gitignore
+!storage/app/public
+storage/app/public/*
+!storage/app/public/.gitignore
+public/storage
+
+# Local database files
+database/*.sqlite
+database/*.sqlite-*
+database/*.sqlite-journal
+
+# Test/cache output
+.phpunit.cache
+.phpunit.result.cache
+coverage
+
+# Docker compose files not needed inside image
+docker-compose.yml
+docker-compose.local-prod.yml
+docker-compose.prod.yml
+docker-compose.override.yml
+
+# Local operational notes / handoff files
+DEPLOY_VALIDATION.md
+DEPLOY_CHECKLIST_ECOMMERCE.md
+HANDOFF_*.md
+
+# OS / temporary files
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.bak
+*.backup
+*.tmp
+*.swp
+*~
+.gitignore.backup-*
+Dockerfile

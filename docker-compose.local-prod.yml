@@ -1,0 +1,54 @@
+name: ecommerce-local-prod
+
+services:
+  mysql:
+    image: mysql:8.4
+    container_name: ecommerce-mysql-localprod
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE:-e-commerce}
+      MYSQL_USER: ${DB_USERNAME:-ecommerce}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-ecommerce}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-root}
+    ports:
+      - "5507:3306"
+    volumes:
+      - ecommerce_mysql_localprod_data:/var/lib/mysql
+
+  mailpit:
+    image: axllent/mailpit:latest
+    container_name: ecommerce-mailpit-localprod
+    restart: unless-stopped
+    ports:
+      - "5027:1025"
+      - "5028:8025"
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+    container_name: ecommerce-app-localprod
+    restart: unless-stopped
+    env_file:
+      - .env.local-prod
+    ports:
+      - "5001:80"
+    depends_on:
+      - mysql
+      - mailpit
+
+  queue:
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+    container_name: ecommerce-queue-localprod
+    restart: unless-stopped
+    env_file:
+      - .env.local-prod
+    command: php artisan queue:work --tries=3 --timeout=120
+    depends_on:
+      - mysql
+      - mailpit
+
+volumes:
+  ecommerce_mysql_localprod_data:

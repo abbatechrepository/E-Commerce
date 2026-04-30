@@ -1,45 +1,27 @@
-services:
-  app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: ecommerce-app
-    ports:
-      - "${APP_PORT:-8088}:8000"
-    env_file:
-      - .env
-    environment:
-      APP_ENV: local
-      APP_DEBUG: "true"
-      DB_CONNECTION: mysql
-      DB_HOST: "${DB_HOST:-host.docker.internal}"
-      DB_PORT: "${DB_PORT:-3306}"
-      DB_DATABASE: "${DB_DATABASE:-e-commerce}"
-      DB_USERNAME: "${DB_USERNAME:-root}"
-      DB_PASSWORD: "${DB_PASSWORD:-root}"
-      QUEUE_CONNECTION: database
-    volumes:
-      - ./:/var/www/html
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
+name: ecommerce-dev
 
-  queue:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: ecommerce-queue
-    command: php artisan queue:work --tries=3 --timeout=120
-    env_file:
-      - .env
+services:
+  mysql:
+    image: mysql:8.4
+    container_name: ecommerce-mysql
+    restart: unless-stopped
     environment:
-      DB_CONNECTION: mysql
-      DB_HOST: "${DB_HOST:-host.docker.internal}"
-      DB_PORT: "${DB_PORT:-3306}"
-      DB_DATABASE: "${DB_DATABASE:-e-commerce}"
-      DB_USERNAME: "${DB_USERNAME:-root}"
-      DB_PASSWORD: "${DB_PASSWORD:-root}"
-      QUEUE_CONNECTION: database
+      MYSQL_DATABASE: ${DB_DATABASE:-e-commerce}
+      MYSQL_USER: ${DB_USERNAME:-ecommerce}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-ecommerce}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-root}
+    ports:
+      - "5506:3306"
     volumes:
-      - ./:/var/www/html
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
+      - ecommerce_mysql_data:/var/lib/mysql
+
+  mailpit:
+    image: axllent/mailpit:latest
+    container_name: ecommerce-mailpit
+    restart: unless-stopped
+    ports:
+      - "5025:1025"
+      - "5026:8025"
+
+volumes:
+  ecommerce_mysql_data:

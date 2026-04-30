@@ -37,6 +37,8 @@
                     @endif
                     @if (auth()->user()->isAdmin())
                         <a href="{{ route('admin.dashboard') }}" class="rounded-full border border-ink/15 px-4 py-2 hover:border-rust hover:text-rust">Admin</a>
+                        <a href="{{ route('admin.products.index') }}" class="hover:text-rust">Produtos</a>
+                        <a href="{{ route('admin.products.create') }}" class="rounded-full bg-ink px-4 py-2 text-white hover:bg-rust">Cadastrar produto</a>
                     @endif
                     <form method="post" action="{{ route('logout') }}">
                         @csrf

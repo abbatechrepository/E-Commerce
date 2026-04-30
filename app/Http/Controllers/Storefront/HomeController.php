@@ -15,7 +15,7 @@ class HomeController extends Controller
                 ->with(['artist', 'genre', 'inventory', 'primaryImage'])
                 ->where('is_active', true)
                 ->where('status', 'active')
-                ->latest('published_at')
+                ->orderByRaw('COALESCE(published_at, created_at) DESC')
                 ->take(8)
                 ->get(),
         ]);
